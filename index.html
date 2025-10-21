@@ -26,9 +26,7 @@
     }
     .container{width:min(100%, 960px); margin-inline:auto; padding: 16px;}
 
-    header{
-      position:relative; isolation:isolate; text-align:center; padding: 64px 16px 24px;
-    }
+    header{ position:relative; isolation:isolate; text-align:center; padding: 64px 16px 24px; }
     h1{
       font-size: clamp(36px, 8vw, 72px);
       line-height:1.05; margin:0; font-weight:800; letter-spacing:-0.02em;
@@ -36,62 +34,86 @@
     }
     .sub{color:var(--muted); margin-top:8px; font-size: clamp(14px, 3vw, 18px)}
 
+    /* Corazones */
     .hearts{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
     .heart{ position:absolute; top:-40px; font-size:24px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.35)); animation: fall linear forwards; opacity:.95 }
-    @keyframes fall{
-      to{ transform: translateY(110vh) rotate(360deg); opacity: .9 }
-    }
+    @keyframes fall{ to{ transform: translateY(110vh) rotate(360deg); opacity:.9 } }
     @media (prefers-reduced-motion: reduce){ .heart{ animation-duration: 0s !important } }
 
     section{position:relative; z-index:1}
 
-    .flip-wrap{ display:grid; place-items:center; padding: 24px 16px; }
-    .card{ width: min(92vw, 360px); height: min(110vw, 520px); perspective: 1200px; }
+    /* Tarjeta */
+    .flip-wrap{ display:flex; justify-content:center; align-items:center; flex-direction:column; padding:16px; }
+    .card{ width:min(92vw,360px); height:min(90vw,450px); perspective:1200px; }
     .card-inner{ position:relative; width:100%; height:100%; transition: transform 800ms cubic-bezier(.2,.8,.2,1); transform-style: preserve-3d; }
     .card.flipped .card-inner{ transform: rotateY(180deg); }
 
-    .card-face{ position:absolute; inset:0; backface-visibility:hidden; border-radius: 24px; overflow:hidden; box-shadow: 0 20px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06); }
+    .card-face{ position:absolute; inset:0; backface-visibility:hidden; border-radius:24px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06); }
     .card-front{ background: var(--card); display:grid; place-items:center }
     .card-front img{ width:100%; height:100%; object-fit: cover; display:block }
-
-    .card-back{ background: linear-gradient(135deg, #2a2433, #1b1a22 55%); transform: rotateY(180deg); display:flex; align-items:center; justify-content:center; padding:32px; }
-    .card-back .mensaje{ font-size: clamp(20px, 5.5vw, 32px); text-align:center; line-height:1.25; }
+    .card-back{ background: linear-gradient(135deg,#2a2433,#1b1a22 55%); transform: rotateY(180deg); display:flex; align-items:center; justify-content:center; padding:32px; }
+    .card-back .mensaje{ font-size: clamp(20px,5.5vw,32px); text-align:center; line-height:1.25; }
     .chip{ display:inline-block; padding:6px 10px; border-radius:999px; background: rgba(255,77,109,.12); color:#ffd9e1; font-weight:600; margin-bottom:12px; font-size:.9rem }
-
-    .tap-hint{ text-align:center; color:var(--muted); font-size: .9rem; margin-top:10px }
+    .tap-hint{ text-align:center; color:var(--muted); font-size:.9rem; margin-top:10px }
 
     /* Carta centrada */
-    .carta{ display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding: 24px 16px 8px; }
-    .carta .box{ background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 18px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.3); max-width:700px; }
-    .carta h2{ margin:0 0 8px; font-size: clamp(20px, 5vw, 28px); text-align:center }
-    .carta p{ margin: 10px 0; color: #e9e9ef; text-align:center }
+    .carta{ display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:24px 16px 8px; }
+    .carta .box{ background: rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:18px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.3); max-width:90%; margin:0 auto; }
+    .carta h2{ margin:0 0 8px; font-size: clamp(20px,5vw,28px) }
+    .carta p{ margin:10px 0; color:#e9e9ef }
 
-    .carousel{ position:relative; margin: 24px auto 48px; width: min(94vw, 820px) }
+    /* Carrusel (mostrar foto completa tipo la segunda imagen) */
+    .carousel{ position:relative; margin:24px auto 48px; width:100%; max-width:820px; overflow:hidden; }
     .track{ display:flex; transition: transform 450ms cubic-bezier(.2,.8,.2,1) }
-    .slide{ min-width:100%; padding: 0 4px }
-    .slide figure{ margin:0; border-radius: 18px; overflow:hidden; box-shadow: 0 14px 36px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.06) }
-    .slide img{ width:100%; height: 60vh; max-height:560px; object-fit: cover; display:block }
+    .slide{ min-width:100%; padding:0 4px }
+    .slide figure{
+      margin:0; border-radius:18px; overflow:hidden;
+      box-shadow:0 14px 36px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.06);
+      background:#0f0f12;            /* color de las “barras” */
+    }
+    /* Clave: contain + alto fijo para que no recorte y se vea completa */
+    .slide img{
+      width:100%;
+      height: 65vh;                   /* espacio vertical para fotos verticales */
+      max-height: 520px;
+      object-fit: contain;            /* NO recorta (como tu segunda imagen) */
+      object-position: center center; /* centrada */
+      display:block;
+      border-radius:16px;
+      image-orientation: from-image;  /* ayuda con orientación en iOS */
+      background:#0f0f12;
+    }
 
     .controls{ display:flex; justify-content:center; gap:12px; margin-top:12px }
-    .btn{ background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text); padding:10px 14px; border-radius: 999px; font-weight:600; cursor:pointer; backdrop-filter: blur(6px) saturate(120%); }
+    .btn{ background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:var(--text); padding:10px 14px; border-radius:999px; font-weight:600; cursor:pointer; backdrop-filter: blur(6px) saturate(120%); }
     .btn:active{ transform: translateY(1px) }
 
     .dots{ display:flex; justify-content:center; gap:8px; margin-top:10px }
     .dot{ width:8px; height:8px; border-radius:50%; background:#666 }
     .dot.active{ background: var(--accent) }
 
-    footer{ text-align:center; color:var(--muted); padding: 32px 16px }
+    footer{ text-align:center; color:var(--muted); padding:32px 16px }
     a{ color:#ffd9e1 }
+
+    /* Ajustes para móvil */
+    @media (max-width:600px){
+      h1{ font-size:42px; }
+      .card{ height:min(86vw,420px); }
+      .slide img{ height: 62vh; max-height: 420px; }
+    }
   </style>
 </head>
 <body>
   <div class="hearts" aria-hidden="true"></div>
+
   <header>
     <div class="container">
       <h1>Felices 6 meses 💘</h1>
-      <p class="sub"> Gracias por este medio añito juntos.</p>
+      <p class="sub">Gracias por este medio añito juntos.</p>
     </div>
   </header>
+
+  <!-- Tarjeta volteable -->
   <section class="flip-wrap">
     <div class="card" id="flipCard" aria-live="polite">
       <div class="card-inner">
@@ -99,22 +121,29 @@
           <img src="fotos/1.jpg" alt="Nosotros dos felices"/>
         </div>
         <div class="card-face card-back">
-          <div class="mensaje"><span class="chip">Para ti ❤️</span><div>Te amo miamor</div></div>
+          <div class="mensaje">
+            <span class="chip">Para ti ❤️</span>
+            <div>Te amo miamor</div>
+          </div>
         </div>
       </div>
     </div>
     <div class="tap-hint">Toca la tarjeta para voltearla</div>
   </section>
 
+  <!-- Carta -->
   <section class="carta">
     <div class="container">
       <div class="box">
         <h2>Para mi persona favorita</h2>
-        <p id="mi-texto">Holi, te amo mucho, perdon por las cosas que han pasado, creo que ambos hemos tenido cosas diferentes y hemos cambiado estas ultimas semanas, pero quiero que sepas que a pesar de todo lo que ha pasado, yo sigo aqui para ti, gracias por estos 6 meses. Te amo miamor ❤️</p>
+        <p id="mi-texto">
+          Holi, te amo mucho, perdon por las cosas que han pasado, creo que ambos hemos tenido cosas diferentes y hemos cambiado estas ultimas semanas, pero quiero que sepas que a pesar de todo lo que ha pasado, yo sigo aqui para ti, gracias por estos 6 meses. Te amo miamor ❤️
+        </p>
       </div>
     </div>
   </section>
 
+  <!-- Carrusel de 6 fotos -->
   <section>
     <div class="carousel" id="carousel" aria-roledescription="carrusel" aria-label="Galería de fotos">
       <div class="track" id="track">
@@ -125,30 +154,32 @@
         <div class="slide"><figure><img src="fotos/6.jpg" alt="Foto 6 juntos"></figure></div>
       </div>
       <div class="controls">
-        <button class="btn" id="prev">⟨</button>
-        <button class="btn" id="next">⟩</button>
+        <button class="btn" id="prev" aria-label="Foto anterior">⟨</button>
+        <button class="btn" id="next" aria-label="Foto siguiente">⟩</button>
       </div>
-      <div class="dots" id="dots"></div>
+      <div class="dots" id="dots" aria-hidden="true"></div>
     </div>
   </section>
+
   <footer>Hecho con amor ❤️ para <strong>ti</strong>.</footer>
-  <script>/* scripts unchanged */
+
+  <script>
     // 1) Corazoncitos cayendo
     (function(){
       const layer = document.querySelector('.hearts');
       const EMOJIS = ['❤️','💖','💘','💝','💗'];
       let active = 0;
-      const MAX = 20; // tope de corazones al mismo tiempo
+      const MAX = 20;
 
       function spawnHeart(){
         if(active >= MAX) return;
         const h = document.createElement('div');
         h.className = 'heart';
         h.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-        const left = Math.random()*100; // vw
-        const size = 18 + Math.random()*18; // px
-        const dur = 5 + Math.random()*5; // s
-        const rot = (Math.random() * 60 - 30); // deg
+        const left = Math.random()*100;
+        const size = 18 + Math.random()*18;
+        const dur = 5 + Math.random()*5;
+        const rot = (Math.random()*60 - 30);
         h.style.left = left + 'vw';
         h.style.fontSize = size + 'px';
         h.style.transform = `translateY(-40px) rotate(${rot}deg)`;
@@ -157,30 +188,21 @@
         active++;
         h.addEventListener('animationend', ()=>{ h.remove(); active--; });
       }
-
       const interval = setInterval(spawnHeart, 250);
-      // Limpia si cambian de pestaña mucho tiempo
-      document.addEventListener('visibilitychange', ()=>{
-        if(document.hidden){ clearInterval(interval); }
-      });
+      document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ clearInterval(interval); } });
     })();
 
-    // 2) Tarjeta volteable (click/tap y teclado)
+    // 2) Tarjeta volteable
     (function(){
       const card = document.getElementById('flipCard');
-      card.setAttribute('tabindex', '0');
+      card.setAttribute('tabindex','0');
       function toggle(){ card.classList.toggle('flipped'); }
       card.addEventListener('click', toggle);
-      card.addEventListener('keydown', (e)=>{
-        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
-      });
-      // Mejora para móviles: tocar fuera regresa al frente
-      document.addEventListener('click', (e)=>{
-        if(!card.contains(e.target)) card.classList.remove('flipped');
-      });
+      card.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }});
+      document.addEventListener('click', (e)=>{ if(!card.contains(e.target)) card.classList.remove('flipped'); });
     })();
 
-    // 3) Carrusel simple con botones y gestos táctiles
+    // 3) Carrusel con autoplay + botones + gestos
     (function(){
       const track = document.getElementById('track');
       const slides = Array.from(track.children);
@@ -189,49 +211,74 @@
       const dotsWrap = document.getElementById('dots');
       let index = 0;
 
-      function updateDots(){
-        dotsWrap.querySelectorAll('.dot').forEach((d,i)=>{
-          d.classList.toggle('active', i === index);
-        });
-      }
-      function goTo(i){
-        index = (i+slides.length)%slides.length;
-        track.style.transform = `translateX(-${index*100}%)`;
-        updateDots();
-      }
-      slides.forEach((_,i)=>{
-        const d = document.createElement('div'); d.className='dot'; dotsWrap.appendChild(d);
-      });
+      // Dots
+      slides.forEach(()=>{ const d=document.createElement('div'); d.className='dot'; dotsWrap.appendChild(d); });
+      function updateDots(){ dotsWrap.querySelectorAll('.dot').forEach((d,i)=> d.classList.toggle('active', i===index)); }
+      function goTo(i){ index = (i+slides.length)%slides.length; track.style.transform = `translateX(-${index*100}%)`; updateDots(); }
       updateDots();
 
-      prev.addEventListener('click', ()=>goTo(index-1));
-      next.addEventListener('click', ()=>goTo(index+1));
+      // Botones manuales
+      prev.addEventListener('click', ()=>{ pauseAutoplayTemporarily(); goTo(index-1); });
+      next.addEventListener('click', ()=>{ pauseAutoplayTemporarily(); goTo(index+1); });
 
-      // Gestos táctiles
-      let startX = 0, isDown=false, deltaX=0;
-      const threshold = 40; // px
-      track.addEventListener('pointerdown', (e)=>{ isDown=true; startX=e.clientX; deltaX=0; track.style.transition='none';});
+      // Gestos táctiles (pausa mientras arrastra)
+      let startX=0, isDown=false, deltaX=0;
+      const threshold=40;
+      track.addEventListener('pointerdown', (e)=>{ isDown=true; startX=e.clientX; deltaX=0; track.style.transition='none'; pauseAutoplayTemporarily(); });
       window.addEventListener('pointermove', (e)=>{
-        if(!isDown) return; deltaX = e.clientX - startX;
+        if(!isDown) return;
+        deltaX = e.clientX - startX;
         track.style.transform = `translateX(calc(-${index*100}% + ${deltaX}px))`;
       });
-      window.addEventListener('pointerup', ()=>{
-        if(!isDown) return; isDown=false; track.style.transition='';
-        if(Math.abs(deltaX) > threshold){
-          if(deltaX < 0) goTo(index+1); else goTo(index-1);
-        } else {
-          goTo(index); // regresa
-        }
-      });
-      // Swipe también con touchcancel (dedo levantado fuera)
-      window.addEventListener('pointercancel', ()=>{ if(isDown){ isDown=false; track.style.transition=''; goTo(index);} });
+      function endDrag(){
+        if(!isDown) return;
+        isDown=false; track.style.transition='';
+        if(Math.abs(deltaX)>threshold){ if(deltaX<0) goTo(index+1); else goTo(index-1); } else { goTo(index); }
+        resumeAutoplaySoon();
+      }
+      window.addEventListener('pointerup', endDrag);
+      window.addEventListener('pointercancel', endDrag);
 
-      // Teclado (accesibilidad)
-      document.addEventListener('keydown', (e)=>{
-        if(e.key==='ArrowLeft') goTo(index-1);
-        if(e.key==='ArrowRight') goTo(index+1);
-      });
+      // Autoplay
+      let autoTimer=null, paused=false;
+      const INTERVAL = 3500; // ms
+      function startAutoplay(){
+        if(paused || autoTimer) return;
+        autoTimer = setInterval(()=> goTo(index+1), INTERVAL);
+      }
+      function stopAutoplay(){ if(autoTimer){ clearInterval(autoTimer); autoTimer=null; } }
+      function pauseAutoplayTemporarily(){ paused=true; stopAutoplay(); }
+      function resumeAutoplaySoon(){ paused=false; stopAutoplay(); setTimeout(startAutoplay, 1200); }
+
+      // Pausar si pestaña no visible (ahorra batería) y reanudar
+      document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ stopAutoplay(); } else { startAutoplay(); } });
+
+      // Inicia
+      startAutoplay();
     })();
+  </script>
+
+  <!-- Botón de música -->
+  <button id="musicBtn" aria-label="Reproducir música">🎵</button>
+  <audio id="music" src="musica.mp3" loop></audio>
+
+  <style>
+    #musicBtn{
+      position:fixed; bottom:24px; right:24px;
+      background: rgba(255,77,109,.85); border:none; border-radius:50%;
+      color:#fff; font-size:26px; width:56px; height:56px; cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,.3); z-index:50;
+    }
+    #musicBtn.playing{ background: rgba(0,200,150,.85); }
+  </style>
+
+  <script>
+    const btn = document.getElementById('musicBtn');
+    const music = document.getElementById('music');
+    btn.addEventListener('click', ()=>{
+      if(music.paused){ music.play(); btn.classList.add('playing'); btn.textContent='⏸️'; }
+      else{ music.pause(); btn.classList.remove('playing'); btn.textContent='🎵'; }
+    });
   </script>
 </body>
 </html>
