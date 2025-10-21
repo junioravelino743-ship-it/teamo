@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Felices 6 meses ❤️</title>
+  <meta name="description" content="Página sorpresa de aniversario con corazones cayendo, tarjeta volteable, carta y carrusel de fotos." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0f0f12;
+      --card: #1a1a1f;
+      --accent: #ff4d6d;
+      --text: #eaeaea;
+      --muted: #bdbdbd;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 50% -10%, #231f26 0%, var(--bg) 40%);
+      overflow-x:hidden;
+    }
+    .container{width:min(100%, 960px); margin-inline:auto; padding: 16px;}
+
+    header{
+      position:relative; isolation:isolate; text-align:center; padding: 64px 16px 24px;
+    }
+    h1{
+      font-size: clamp(36px, 8vw, 72px);
+      line-height:1.05; margin:0; font-weight:800; letter-spacing:-0.02em;
+      text-shadow: 0 4px 24px rgba(255,77,109,.25);
+    }
+    .sub{color:var(--muted); margin-top:8px; font-size: clamp(14px, 3vw, 18px)}
+
+    .hearts{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .heart{ position:absolute; top:-40px; font-size:24px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.35)); animation: fall linear forwards; opacity:.95 }
+    @keyframes fall{
+      to{ transform: translateY(110vh) rotate(360deg); opacity: .9 }
+    }
+    @media (prefers-reduced-motion: reduce){ .heart{ animation-duration: 0s !important } }
+
+    section{position:relative; z-index:1}
+
+    .flip-wrap{ display:grid; place-items:center; padding: 24px 16px; }
+    .card{ width: min(92vw, 360px); height: min(110vw, 520px); perspective: 1200px; }
+    .card-inner{ position:relative; width:100%; height:100%; transition: transform 800ms cubic-bezier(.2,.8,.2,1); transform-style: preserve-3d; }
+    .card.flipped .card-inner{ transform: rotateY(180deg); }
+
+    .card-face{ position:absolute; inset:0; backface-visibility:hidden; border-radius: 24px; overflow:hidden; box-shadow: 0 20px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06); }
+    .card-front{ background: var(--card); display:grid; place-items:center }
+    .card-front img{ width:100%; height:100%; object-fit: cover; display:block }
+
+    .card-back{ background: linear-gradient(135deg, #2a2433, #1b1a22 55%); transform: rotateY(180deg); display:flex; align-items:center; justify-content:center; padding:32px; }
+    .card-back .mensaje{ font-size: clamp(20px, 5.5vw, 32px); text-align:center; line-height:1.25; }
+    .chip{ display:inline-block; padding:6px 10px; border-radius:999px; background: rgba(255,77,109,.12); color:#ffd9e1; font-weight:600; margin-bottom:12px; font-size:.9rem }
+
+    .tap-hint{ text-align:center; color:var(--muted); font-size: .9rem; margin-top:10px }
+
+    /* Carta centrada */
+    .carta{ display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding: 24px 16px 8px; }
+    .carta .box{ background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 18px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.3); max-width:700px; }
+    .carta h2{ margin:0 0 8px; font-size: clamp(20px, 5vw, 28px); text-align:center }
+    .carta p{ margin: 10px 0; color: #e9e9ef; text-align:center }
+
+    .carousel{ position:relative; margin: 24px auto 48px; width: min(94vw, 820px) }
+    .track{ display:flex; transition: transform 450ms cubic-bezier(.2,.8,.2,1) }
+    .slide{ min-width:100%; padding: 0 4px }
+    .slide figure{ margin:0; border-radius: 18px; overflow:hidden; box-shadow: 0 14px 36px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.06) }
+    .slide img{ width:100%; height: 60vh; max-height:560px; object-fit: cover; display:block }
+
+    .controls{ display:flex; justify-content:center; gap:12px; margin-top:12px }
+    .btn{ background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text); padding:10px 14px; border-radius: 999px; font-weight:600; cursor:pointer; backdrop-filter: blur(6px) saturate(120%); }
+    .btn:active{ transform: translateY(1px) }
+
+    .dots{ display:flex; justify-content:center; gap:8px; margin-top:10px }
+    .dot{ width:8px; height:8px; border-radius:50%; background:#666 }
+    .dot.active{ background: var(--accent) }
+
+    footer{ text-align:center; color:var(--muted); padding: 32px 16px }
+    a{ color:#ffd9e1 }
+  </style>
+</head>
+<body>
+  <div class="hearts" aria-hidden="true"></div>
+  <header>
+    <div class="container">
+      <h1>Felices 6 meses 💘</h1>
+      <p class="sub"> Gracias por este medio añito juntos.</p>
+    </div>
+  </header>
+  <section class="flip-wrap">
+    <div class="card" id="flipCard" aria-live="polite">
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <img src="fotos/1.jpg" alt="Nosotros dos felices"/>
+        </div>
+        <div class="card-face card-back">
+          <div class="mensaje"><span class="chip">Para ti ❤️</span><div>Te amo miamor</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="tap-hint">Toca la tarjeta para voltearla</div>
+  </section>
+
+  <section class="carta">
+    <div class="container">
+      <div class="box">
+        <h2>Para mi persona favorita</h2>
+        <p id="mi-texto">Holi, te amo mucho, perdon por las cosas que han pasado, creo que ambos hemos tenido cosas diferentes y hemos cambiado estas ultimas semanas, pero quiero que sepas que a pesar de todo lo que ha pasado, yo sigo aqui para ti, gracias por estos 6 meses. Te amo miamor ❤️</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="carousel" id="carousel" aria-roledescription="carrusel" aria-label="Galería de fotos">
+      <div class="track" id="track">
+        <div class="slide"><figure><img src="fotos/2.jpg" alt="Foto 2 juntos"></figure></div>
+        <div class="slide"><figure><img src="fotos/3.jpg" alt="Foto 3 juntos"></figure></div>
+        <div class="slide"><figure><img src="fotos/4.jpg" alt="Foto 4 juntos"></figure></div>
+        <div class="slide"><figure><img src="fotos/5.jpg" alt="Foto 5 juntos"></figure></div>
+        <div class="slide"><figure><img src="fotos/6.jpg" alt="Foto 6 juntos"></figure></div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="prev">⟨</button>
+        <button class="btn" id="next">⟩</button>
+      </div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </section>
+  <footer>Hecho con amor ❤️ para <strong>ti</strong>.</footer>
+  <script>/* scripts unchanged */
+    // 1) Corazoncitos cayendo
+    (function(){
+      const layer = document.querySelector('.hearts');
+      const EMOJIS = ['❤️','💖','💘','💝','💗'];
+      let active = 0;
+      const MAX = 20; // tope de corazones al mismo tiempo
+
+      function spawnHeart(){
+        if(active >= MAX) return;
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+        const left = Math.random()*100; // vw
+        const size = 18 + Math.random()*18; // px
+        const dur = 5 + Math.random()*5; // s
+        const rot = (Math.random() * 60 - 30); // deg
+        h.style.left = left + 'vw';
+        h.style.fontSize = size + 'px';
+        h.style.transform = `translateY(-40px) rotate(${rot}deg)`;
+        h.style.animationDuration = dur + 's';
+        layer.appendChild(h);
+        active++;
+        h.addEventListener('animationend', ()=>{ h.remove(); active--; });
+      }
+
+      const interval = setInterval(spawnHeart, 250);
+      // Limpia si cambian de pestaña mucho tiempo
+      document.addEventListener('visibilitychange', ()=>{
+        if(document.hidden){ clearInterval(interval); }
+      });
+    })();
+
+    // 2) Tarjeta volteable (click/tap y teclado)
+    (function(){
+      const card = document.getElementById('flipCard');
+      card.setAttribute('tabindex', '0');
+      function toggle(){ card.classList.toggle('flipped'); }
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+      });
+      // Mejora para móviles: tocar fuera regresa al frente
+      document.addEventListener('click', (e)=>{
+        if(!card.contains(e.target)) card.classList.remove('flipped');
+      });
+    })();
+
+    // 3) Carrusel simple con botones y gestos táctiles
+    (function(){
+      const track = document.getElementById('track');
+      const slides = Array.from(track.children);
+      const prev = document.getElementById('prev');
+      const next = document.getElementById('next');
+      const dotsWrap = document.getElementById('dots');
+      let index = 0;
+
+      function updateDots(){
+        dotsWrap.querySelectorAll('.dot').forEach((d,i)=>{
+          d.classList.toggle('active', i === index);
+        });
+      }
+      function goTo(i){
+        index = (i+slides.length)%slides.length;
+        track.style.transform = `translateX(-${index*100}%)`;
+        updateDots();
+      }
+      slides.forEach((_,i)=>{
+        const d = document.createElement('div'); d.className='dot'; dotsWrap.appendChild(d);
+      });
+      updateDots();
+
+      prev.addEventListener('click', ()=>goTo(index-1));
+      next.addEventListener('click', ()=>goTo(index+1));
+
+      // Gestos táctiles
+      let startX = 0, isDown=false, deltaX=0;
+      const threshold = 40; // px
+      track.addEventListener('pointerdown', (e)=>{ isDown=true; startX=e.clientX; deltaX=0; track.style.transition='none';});
+      window.addEventListener('pointermove', (e)=>{
+        if(!isDown) return; deltaX = e.clientX - startX;
+        track.style.transform = `translateX(calc(-${index*100}% + ${deltaX}px))`;
+      });
+      window.addEventListener('pointerup', ()=>{
+        if(!isDown) return; isDown=false; track.style.transition='';
+        if(Math.abs(deltaX) > threshold){
+          if(deltaX < 0) goTo(index+1); else goTo(index-1);
+        } else {
+          goTo(index); // regresa
+        }
+      });
+      // Swipe también con touchcancel (dedo levantado fuera)
+      window.addEventListener('pointercancel', ()=>{ if(isDown){ isDown=false; track.style.transition=''; goTo(index);} });
+
+      // Teclado (accesibilidad)
+      document.addEventListener('keydown', (e)=>{
+        if(e.key==='ArrowLeft') goTo(index-1);
+        if(e.key==='ArrowRight') goTo(index+1);
+      });
+    })();
+  </script>
+</body>
+</html>
