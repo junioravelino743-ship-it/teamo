@@ -134,6 +134,8 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             margin-top: 20px;
         }
+        
+        
     </style>
 </head>
 <body>
@@ -184,6 +186,23 @@
       setInterval(spawnHeart, 250);
     })();
 </script>
-
+<button id="musicBtn">🎵</button>
+  <audio id="music" src="xd.mp3" loop></audio>
+  <style>
+    #musicBtn{
+      position:fixed;bottom:24px;right:24px;background:rgba(255,77,109,.85);
+      border:none;border-radius:50%;color:white;font-size:26px;width:56px;height:56px;
+      cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:50;
+    }
+    #musicBtn.playing{background:rgba(0,200,150,.85);}
+  </style>
+  <script>
+    const btn=document.getElementById('musicBtn');
+    const music=document.getElementById('music');
+    btn.addEventListener('click',()=>{
+      if(music.paused){music.play();btn.classList.add('playing');btn.textContent='⏸️';}
+      else{music.pause();btn.classList.remove('playing');btn.textContent='🎵';}
+    });
+  </script>
 </body>
 </html>
