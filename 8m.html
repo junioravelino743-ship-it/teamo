@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Felices 8 meses ❤️</title>
+  <meta name="description" content="Felices 8 meses + Our Wrapped con overlay que reproduce audios por tarjeta, y música principal con crossfade." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0f0f12;
+      --card:#1a1a1f;
+      --accent:#ff4d6d;
+      --text:#eaeaea;
+      --muted:#bdbdbd;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      background:radial-gradient(1200px 800px at 50% -10%, #231f26 0%, var(--bg) 40%);
+      overflow-x:hidden;
+    }
+    .container{width:min(100%,960px);margin-inline:auto;padding:16px;}
+
+    header{ text-align:center; padding:64px 16px 18px; position:relative; z-index:1; }
+    h1{
+      font-size:clamp(36px,8vw,72px);
+      line-height:1.05;margin:0;font-weight:800;
+      text-shadow:0 4px 24px rgba(255,77,109,.25);
+    }
+    .sub{color:var(--muted);margin-top:8px;font-size:clamp(14px,3vw,18px)}
+
+    /* Corazones */
+    .hearts{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+    .heart{position:absolute;top:-40px;font-size:24px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));animation:fall linear forwards;opacity:.95}
+    @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.9}}
+
+    section{position:relative;z-index:1}
+
+    /* --- Wrapped --- */
+    .wrapped{padding:6px 0 14px;}
+    .wrapped-title{margin:10px 0 6px;font-size:clamp(22px,5vw,34px);text-align:center;}
+    .wrapped-sub{margin:0 0 18px;text-align:center;color:var(--muted);}
+    .wrapped-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;}
+
+    .chip{
+      display:inline-block;padding:6px 10px;border-radius:999px;
+      background:rgba(255,77,109,.12);color:#ffd9e1;font-weight:600;font-size:.9rem;
+    }
+
+    .wcard{
+      grid-column:span 6;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:0 14px 34px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.04);
+      cursor:pointer;
+      transition:transform .18s ease,border-color .18s ease;
+      user-select:none;
+    }
+    .wcard:hover{transform:translateY(-2px);border-color:rgba(255,77,109,.35);}
+    .wcard .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+    .wcard .emoji{font-size:22px;opacity:.95;}
+    .wcard h3{margin:10px 0 6px;font-size:16px;}
+    .wcard p{margin:0;color:#d9d9e2;opacity:.9;font-size:13px;line-height:1.35;}
+    .wcard .hint{margin-top:10px;font-size:12px;color:var(--muted);}
+
+    @media (max-width:700px){ .wcard{grid-column:span 12;} }
+
+    /* --- Overlay expand --- */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.6);
+      display:none;align-items:center;justify-content:center;
+      z-index:999;padding:18px;
+    }
+    .overlay.show{display:flex;}
+    .overlay-card{
+      width:min(92vw,720px);
+      background:linear-gradient(135deg,#2a2433,#14131a 55%);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:22px;overflow:hidden;
+      box-shadow:0 30px 90px rgba(0,0,0,.65);
+      transform:translateY(8px) scale(.98);
+      opacity:0;animation:pop .22s ease forwards;
+      position:relative;
+    }
+    @keyframes pop{to{transform:translateY(0) scale(1);opacity:1;}}
+    .overlay-close{
+      position:absolute;right:10px;top:10px;
+      border:none;background:rgba(255,255,255,.10);
+      color:var(--text);
+      width:40px;height:40px;border-radius:999px;
+      cursor:pointer;
+    }
+    .overlay-media{
+      background:#0f0f12;max-height:52vh;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .overlay-media img{
+      width:100%;height:52vh;max-height:520px;
+      object-fit:contain;background:#0f0f12;display:block;
+    }
+    .overlay-body{padding:18px 18px 20px;}
+    .overlay-chip{
+      display:inline-block;padding:6px 10px;border-radius:999px;
+      background:rgba(255,77,109,.12);color:#ffd9e1;font-weight:600;font-size:.9rem;
+      margin-bottom:10px;
+    }
+    .overlay-title{margin:0 0 8px;font-size:20px;}
+    .overlay-text{margin:0 0 12px;color:#e9e9ef;line-height:1.5;}
+    .overlay-meta{color:var(--muted);font-size:12px;}
+
+    /* Flip cards */
+    .flip-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;padding:16px;}
+    .card{width:min(92vw,360px);aspect-ratio:3/4;perspective:1200px;margin:16px; cursor:pointer;}
+    .card-inner{position:relative;width:100%;height:100%;transition:transform 800ms cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d;}
+    .card.flipped .card-inner{transform:rotateY(180deg);}
+    .card-face{
+      position:absolute;inset:0;backface-visibility:hidden;border-radius:24px;overflow:hidden;
+      box-shadow:0 20px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .card-front{background:var(--card);display:grid;place-items:center;}
+    .card-front img{
+      width:100%;height:100%;
+      object-fit:contain;object-position:center;background:#0f0f12;
+      border-radius:24px;
+    }
+    .card-back{
+      background:linear-gradient(135deg,#2a2433,#1b1a22 55%);
+      transform:rotateY(180deg);
+      display:flex;align-items:center;justify-content:center;padding:32px;
+    }
+    .card-back .mensaje{font-size:clamp(20px,5.5vw,32px);text-align:center;line-height:1.25;}
+    .tap-hint{text-align:center;color:var(--muted);font-size:.9rem;margin-top:10px;}
+
+    /* Letter */
+    .carta{display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:16px 16px 8px;}
+    .carta .box{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:18px;padding:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.3);
+      max-width:90%;margin:0 auto;
+    }
+    .carta h2{margin:0 0 8px;font-size:clamp(20px,5vw,28px);}
+    .carta p{margin:10px 0;color:#e9e9ef;line-height:1.6;}
+
+    footer{text-align:center;color:var(--muted);padding:32px 16px}
+
+    /* Music bar bottom */
+    #musicBar{
+      position:sticky;bottom:0;z-index:60;
+      padding:14px 16px;
+      background:rgba(15,15,18,.72);
+      backdrop-filter:blur(10px);
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    #musicBtn{
+      width:100%;max-width:520px;margin:0 auto;display:block;
+      background:rgba(255,77,109,.88);
+      border:1px solid rgba(255,255,255,.14);
+      color:white;font-size:16px;font-weight:800;
+      padding:12px 14px;border-radius:999px;
+      cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    #musicBtn.playing{background:rgba(0,200,150,.88);}
+    #musicHint{
+      max-width:520px;margin:10px auto 0;text-align:center;
+      color:rgba(255,255,255,.72);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hearts"></div>
+
+  <header>
+    <div class="container">
+      <h1>Felices 8 meses 💘</h1>
+      <p class="sub">Our Wrapped ✨ (nuestros mejores momentos)</p>
+    </div>
+  </header>
+
+  <section class="wrapped">
+    <div class="container">
+      <h2 class="wrapped-title">Our Wrapped ✨</h2>
+      <p class="wrapped-sub">Toca una tarjeta para verla completa 💖</p>
+      <div class="wrapped-grid" id="wrappedGrid"></div>
+    </div>
+  </section>
+
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="overlay-card" role="dialog" aria-modal="true">
+      <button class="overlay-close" id="overlayClose">✕</button>
+      <div class="overlay-media" id="overlayMedia"></div>
+      <div class="overlay-body">
+        <div class="overlay-chip" id="overlayChip"></div>
+        <h3 class="overlay-title" id="overlayTitle"></h3>
+        <p class="overlay-text" id="overlayText"></p>
+        <div class="overlay-meta" id="overlayMeta"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flip Card 1 -->
+  <section class="flip-wrap">
+    <div class="card" id="flipCard" data-audio="audios/recuerdo1.mp3">
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <img src="fotos/8m1.jpg" alt="Nosotros dos felices"/>
+        </div>
+        <div class="card-face card-back">
+          <div class="mensaje">
+            <span class="chip">Para ti ❤️</span>
+            <div>Hoy cumplimos 8 meses y me emociona un chingo. Gracias por estar conmigo. Te amo 💘</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+
+  <section class="carta">
+    <div class="container">
+      <div class="box">
+        <h2>Para mi persona favorita</h2>
+        <p>Holi mi amor ❤️<br><br>Hoy son 8 meses contigo y se siente bien bonito tenerte en mi vida. Te amo muchísimo</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flip Card 2 -->
+  <section class="flip-wrap">
+    <div class="card" id="flipCard2" data-audio="audios/recuerdo2.mp3">
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <img src="fotos/8m2.jpg" alt="Otro momento juntos"/>
+        </div>
+        <div class="card-face card-back">
+          <div class="mensaje">
+            <span class="chip">Para ti ❤️</span>
+            <div>No encontre mas fotos 😭💖</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Hecho con amor ❤️ para <strong>ti</strong>.</footer>
+
+  <div id="musicBar">
+    <button id="musicBtn">⏯</button>
+   
+  </div>
+
+  <!-- MAIN MUSIC -->
+  <audio id="music" src="cuando-no-era-cantante.mp3" loop playsinline></audio>
+
+  <script>
+    // ====== HEARTS ======
+    (function(){
+      const layer=document.querySelector('.hearts');
+      const EMOJIS=['❤️','💖','💘','💝','💗'];
+      let active=0,MAX=20;
+      function spawnHeart(){
+        if(active>=MAX)return;
+        const h=document.createElement('div');
+        h.className='heart';
+        h.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+        h.style.left=Math.random()*100+'vw';
+        h.style.fontSize=18+Math.random()*18+'px';
+        h.style.animationDuration=5+Math.random()*5+'s';
+        layer.appendChild(h);
+        active++;
+        h.addEventListener('animationend',()=>{h.remove();active--;});
+      }
+      setInterval(spawnHeart,250);
+    })();
+
+    // ====== SAFE ESC ======
+    function esc(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // ====== AUDIO MANAGER (fade + auto-return when card audio ends) ======
+    const FADE_MS = 450;
+    const MAIN_VOL = 0.85;
+    const CARD_VOL = 1.0;
+
+    const music = document.getElementById('music');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicHint = document.getElementById('musicHint');
+
+    const cardAudio = new Audio();
+    cardAudio.preload = "auto";
+    cardAudio.playsInline = true;
+
+    let audioUnlocked = false;
+    let overlayOpen = false;        // << para saber si el overlay está abierto
+    let activeCardOpen = false;     // << si una flip-card está abierta
+
+    function clearFadeTimers(aud){
+      if (aud._fadeTimer) { clearInterval(aud._fadeTimer); aud._fadeTimer = null; }
+    }
+    function fadeTo(aud, targetVol, ms){
+      return new Promise((resolve)=>{
+        clearFadeTimers(aud);
+        targetVol = Math.max(0, Math.min(1, targetVol));
+        const start = (typeof aud.volume === "number") ? aud.volume : 1;
+        const steps = Math.max(1, Math.round(ms / 16));
+        let i = 0;
+        aud._fadeTimer = setInterval(()=>{
+          i++;
+          const t = i / steps;
+          aud.volume = start + (targetVol - start) * t;
+          if (i >= steps){
+            clearFadeTimers(aud);
+            aud.volume = targetVol;
+            resolve();
+          }
+        }, 16);
+      });
+    }
+
+    async function unlockAudio(){
+      if (audioUnlocked) return true;
+      audioUnlocked = true;
+      try{
+        music.volume = 0;
+        await music.play();
+        music.pause();
+        music.currentTime = 0;
+        return true;
+      }catch(e){ return false; }
+    }
+
+    function uiSetPlaying(isPlaying){
+      if (!musicBtn || !musicHint) return;
+      if (isPlaying){
+        musicBtn.classList.add('playing');
+        musicBtn.textContent = '⏸️ Pausar música';
+        musicHint.style.display = 'none';
+      } else {
+        musicBtn.classList.remove('playing');
+        musicBtn.textContent = '▶️ Reproducir música';
+        musicHint.style.display = 'block';
+      }
+    }
+
+    async function playMainMusic(){
+      if (!audioUnlocked) return;
+      try{
+        music.volume = Math.min(music.volume ?? 0, MAIN_VOL);
+        await music.play();
+        uiSetPlaying(true);
+        await fadeTo(music, MAIN_VOL, FADE_MS);
+      }catch(e){ uiSetPlaying(false); }
+    }
+
+    async function pauseMainMusic(){
+      try{ await fadeTo(music, 0, FADE_MS); }catch(e){}
+      music.pause();
+      uiSetPlaying(false);
+    }
+
+    async function playCardAudio(src){
+      await unlockAudio();
+
+      // fade out main
+      if (!music.paused){
+        await fadeTo(music, 0, FADE_MS);
+        music.pause();
+        uiSetPlaying(false);
+      }
+
+      // stop previous card audio
+      if (!cardAudio.paused){
+        await fadeTo(cardAudio, 0, FADE_MS);
+        cardAudio.pause();
+        cardAudio.currentTime = 0;
+      }
+
+      // play new card audio
+      cardAudio.src = src;
+      cardAudio.currentTime = 0;
+      cardAudio.volume = 0;
+      try{
+        await cardAudio.play();
+        await fadeTo(cardAudio, CARD_VOL, FADE_MS);
+      }catch(e){}
+    }
+
+    async function stopCardAudioAndResumeMain(){
+      if (!cardAudio.paused){
+        await fadeTo(cardAudio, 0, FADE_MS);
+        cardAudio.pause();
+        cardAudio.currentTime = 0;
+      }
+      await playMainMusic();
+    }
+
+    // ✅ AUTO-RETURN: si termina el audio del recuerdo, vuelve la canción principal
+    cardAudio.addEventListener('ended', async ()=>{
+      // Solo regresa a la música principal si NO hay otra cosa abierta que requiera audio de recuerdo.
+      // Si el overlay o una flip card siguen abiertos, igual vuelve a la música principal (como pediste).
+      await stopCardAudioAndResumeMain();
+    });
+
+    musicBtn.addEventListener('click', async ()=>{
+      await unlockAudio();
+
+      if (!cardAudio.paused){
+        await stopCardAudioAndResumeMain();
+        return;
+      }
+
+      if (music.paused) await playMainMusic();
+      else await pauseMainMusic();
+    });
+
+    window.addEventListener('pointerdown', ()=>{ unlockAudio(); }, { once:true });
+
+    // ====== FLIP CARDS ======
+    function makeFlipCard(id){
+      const card = document.getElementById(id);
+      if(!card) return;
+
+      const src = card.getAttribute('data-audio') || "";
+      card.setAttribute('tabindex','0');
+
+      const toggle = async () => {
+        const opening = !card.classList.contains('flipped');
+        card.classList.toggle('flipped');
+
+        if (opening){
+          activeCardOpen = true;
+          if (src.trim()) await playCardAudio(src);
+          else { await unlockAudio(); await playMainMusic(); }
+        } else {
+          activeCardOpen = false;
+          await stopCardAudioAndResumeMain();
+        }
+      };
+
+      card.addEventListener('click', (e)=>{ e.stopPropagation(); toggle(); });
+      card.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          toggle();
+        }
+      });
+
+      document.addEventListener('click', async (e)=>{
+        if(!card.contains(e.target) && card.classList.contains('flipped')){
+          card.classList.remove('flipped');
+          activeCardOpen = false;
+          await stopCardAudioAndResumeMain();
+        }
+      });
+    }
+    makeFlipCard('flipCard');
+    makeFlipCard('flipCard2');
+
+    // ====== WRAPPED + OVERLAY (CON AUDIO) ======
+    const WRAPPED = [
+      { category:"Momentos top", emoji:"🏆", title:"Nuestro mejor día", preview:"Ese día que todo se sintió perfecto…",
+        text:"Siento que es de las mejores citas que hemos tenido, gracias por llevarme y contar conmigo, gracias por hacerme parte de tu vida.", meta:"Date: 'Julio • en verachas'", img:"fotos/wrapped1.jpg",
+        audio:"audios/wrapped1.mp3" },
+
+      { category:"Risas", emoji:"😂", title:"La risa más fuerte", preview:"El momento mas xd jajaja…",
+        text:"No olvidar cuando 😭", meta:"Date: tu casa", img:"fotos/wrapped2.jpg",
+        audio:"audios/wrapped2.mp3" },
+
+      { category:"Canción", emoji:"🎧", title:"Nuestra canción", preview:"Es la cancion que me recuerda a ti <3…",
+        text:"Yo no conocia esa cancion hasta que tu me la dedicaste, y me encantó, dq ya es un clasico.", meta:"Date: 'me la dedicaste'", img:"fotos/wrapped3.jpg",
+        audio:"audios/wrapped3.mp3" },
+
+      { category:"Foto fav", emoji:"💗", title:"La foto que mas me gusta", preview:"Hay otra, pero creo la tienes tu xd…",
+        text:"Pues nada, me gusta esta foto y creo que ya.", meta:"Date: 'en el maison lol'", img:"fotos/wrapped4.jpg",
+        audio:"audios/wrapped4.mp3" },
+
+      
+    ];
+
+    const grid = document.getElementById("wrappedGrid");
+    const overlay = document.getElementById("overlay");
+    const overlayClose = document.getElementById("overlayClose");
+    const overlayMedia = document.getElementById("overlayMedia");
+    const overlayChip = document.getElementById("overlayChip");
+    const overlayTitle = document.getElementById("overlayTitle");
+    const overlayText = document.getElementById("overlayText");
+    const overlayMeta = document.getElementById("overlayMeta");
+
+    function cardHTML(item, idx){
+      return `
+        <article class="wcard" tabindex="0" data-idx="${idx}">
+          <div class="top">
+            <span class="chip">${esc(item.category)}</span>
+            <span class="emoji">${esc(item.emoji || "💖")}</span>
+          </div>
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.preview || "")}</p>
+          <div class="hint">Toca para abrir</div>
+        </article>
+      `;
+    }
+    grid.innerHTML = WRAPPED.map(cardHTML).join("");
+
+    async function openOverlayByIndex(idx){
+      const item = WRAPPED[idx];
+
+      overlayChip.textContent = item.category || "Our Wrapped";
+      overlayTitle.textContent = item.title || "";
+      overlayText.textContent = item.text || "";
+      overlayMeta.textContent = item.meta || "";
+
+      const img = item.img && item.img.trim();
+      overlayMedia.innerHTML = img
+        ? `<img src="${esc(item.img)}" alt="${esc(item.title || 'Momento')}" />`
+        : `<div style="padding:22px;color:#bdbdbd;text-align:center">Sin foto aquí (puedes poner una cuando quieras) 💗</div>`;
+
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+      overlayOpen = true;
+
+      if (item.audio && item.audio.trim()){
+        await playCardAudio(item.audio);
+      } else {
+        await unlockAudio();
+        if (music.paused) await playMainMusic();
+      }
+    }
+
+    async function closeOverlayFn(){
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+      overlayOpen = false;
+      await stopCardAudioAndResumeMain();
+    }
+
+    grid.addEventListener("click", (e)=>{
+      const card = e.target.closest(".wcard");
+      if(!card) return;
+      const idx = Number(card.getAttribute("data-idx"));
+      openOverlayByIndex(idx);
+    });
+
+    grid.addEventListener("keydown", (e)=>{
+      const card = e.target.closest(".wcard");
+      if(!card) return;
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        const idx = Number(card.getAttribute("data-idx"));
+        openOverlayByIndex(idx);
+      }
+    });
+
+    overlayClose.addEventListener("click", () => closeOverlayFn());
+    overlay.addEventListener("click", (e)=>{ if(e.target === overlay) closeOverlayFn(); });
+    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape" && overlay.classList.contains("show")) closeOverlayFn(); });
+
+  </script>
+</body>
+</html>
