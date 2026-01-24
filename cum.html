@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Feliz Cumple, mi amor 💖</title>
+  <style>
+    :root{
+      --bg1:#0f1020;
+      --bg2:#1b1f3a;
+      --card:#ffffff;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 20% 10%, #2a2f6b 0%, transparent 50%),
+                  radial-gradient(1000px 700px at 90% 20%, #6b2a54 0%, transparent 45%),
+                  linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:#fff;
+      overflow:hidden;
+    }
+
+    .stars{
+      position:fixed; inset:0;
+      background-image: radial-gradient(rgba(255,255,255,.35) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity:.18;
+      pointer-events:none;
+    }
+
+    .wrap{
+      width:min(920px, 92vw);
+      display:grid;
+      place-items:center;
+      gap:22px;
+      text-align:center;
+      padding:28px 18px;
+      position:relative;
+      z-index:2;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(22px,4vw,34px);
+    }
+    .sub{
+      margin:0;
+      opacity:.8;
+      font-size:clamp(14px,2.5vw,16px);
+    }
+
+    /* 🎁 AREA REGALOS */
+    .gift-area{
+      display:grid;
+      place-items:center;
+      padding:18px 0 8px;
+    }
+
+    .gifts{
+      display:flex;
+      gap:40px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .gift-img{
+      width:220px;
+      cursor:pointer;
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,.35));
+      animation: float 2.5s ease-in-out infinite;
+      transition: transform .25s ease;
+    }
+
+    .gift-img:hover{
+      transform: scale(1.08) rotate(-2deg);
+    }
+
+    @keyframes float{
+      0%{ transform: translateY(0); }
+      50%{ transform: translateY(-14px); }
+      100%{ transform: translateY(0); }
+    }
+
+    .hint{
+      margin-top:10px;
+      font-size:14px;
+      opacity:.85;
+    }
+
+    /* Popup base */
+    .modal{
+      position:fixed; inset:0;
+      display:grid;
+      place-items:center;
+      background: rgba(0,0,0,.55);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .25s ease;
+      z-index:10;
+      padding:18px;
+    }
+    .modal.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .card{
+      width:min(560px, 92vw);
+      background: var(--card);
+      color:#111;
+      border-radius:22px;
+      box-shadow: var(--shadow);
+      padding:22px 18px 18px;
+      animation: pop .35s ease;
+    }
+    @keyframes pop{
+      from{ transform: translateY(10px) scale(.98); opacity:.3; }
+      to{ transform: translateY(0) scale(1); opacity:1; }
+    }
+    .badge{
+      display:inline-block;
+      background: linear-gradient(135deg, #ff5fa2, #ff2f72);
+      color:#fff;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:14px;
+      margin-bottom:12px;
+    }
+    .msg{
+      font-size:clamp(22px,4vw,34px);
+      margin:8px 0 10px;
+      font-weight:900;
+    }
+    .small{
+      margin:0 0 14px;
+      opacity:.8;
+      font-size:15px;
+    }
+    .photo{
+      width:100%;
+      border-radius:18px;
+      overflow:hidden;
+      background:#f3f3f3;
+    }
+    .photo img{
+      width:100%;
+      max-height:520px;
+      object-fit:cover;
+    }
+
+    /* Video */
+    .video-wrap{
+      width:100%;
+      border-radius:18px;
+      overflow:hidden;
+      background:#000;
+    }
+    .video-wrap video{
+      width:100%;
+      display:block;
+      max-height:520px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:0;
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg, #ff5fa2, #ff2f72);
+      color:#fff;
+    }
+    .btn-ghost{
+      background: #f1f1f1;
+    }
+
+    /* Confetti */
+    .confetti{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:9;
+    }
+    .confetti i{
+      position:absolute;
+      width:10px; height:16px;
+      top:-20px;
+      border-radius:3px;
+      animation: fall linear forwards;
+    }
+    @keyframes fall{
+      to{ transform: translateY(110vh) rotate(540deg); }
+    }
+
+    /* 🥚 Easter egg oculto */
+    .easter-egg{
+      cursor:pointer;
+      color:inherit;
+      opacity:.99;
+      font-weight:900;
+      padding:0 4px;
+      border-radius:6px;
+      user-select:none;
+      transition: opacity .2s ease, text-shadow .2s ease, background .2s ease;
+    }
+    .easter-egg:hover{
+      opacity:1;
+      background: rgba(255,95,162,.12);
+      text-shadow: 0 0 10px rgba(255,95,162,.85);
+    }
+  </style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<main class="wrap">
+  <div>
+    <h1>Hoy es un día especial miamor</h1>
+    <p class="sub">Toca los regalos para descubrir las sorpresas</p>
+  </div>
+
+  <section class="gift-area">
+    <div class="gifts">
+      <!-- 🎁 Regalo 1: foto + música -->
+      <img src="regalo.png" id="gift1" class="gift-img" alt="Regalo 1">
+
+      <!-- 🎁 Regalo 2: video -->
+      <img src="regalo2.png" id="gift2" class="gift-img" alt="Regalo 2">
+    </div>
+
+    
+  </section>
+</main>
+
+<!-- Modal 1: FOTO + MÚSICA -->
+<div class="modal" id="modal">
+  <div class="card">
+    <div class="badge">🎉 Sorpresa 🎉</div>
+    <div class="msg">¡Feliz cumple, mi amor! 💕</div>
+    <p class="small">Te amo miamor</p>
+
+    <div class="photo">
+      <img src="foto.jpg" alt="Foto de mi amor">
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="replay">Repetir</button>
+      <button class="btn-ghost" id="close">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 2: VIDEO -->
+<div class="modal" id="videoModal">
+  <div class="card">
+    <div class="badge">Vidio</div>
+    <div class="msg">Un <span class="easter-egg" id="secretLink">vidio</span> para ti <3</div>
+    <p class="small">
+      puchale plei 
+      
+    </p>
+
+    <div class="video-wrap">
+      <video id="video" controls>
+        <source src="video.mp4" type="video/mp4">
+        Tu navegador no soporta video.
+      </video>
+    </div>
+
+    <div class="actions">
+      <button class="btn-ghost" id="closeVideo">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- 🥚 Modal 3: VIDEO SECRETO -->
+<div class="modal" id="secretModal">
+  <div class="card">
+    <div class="badge">🤫 Secreto 🤫</div>
+    <div class="msg">te amo</div>
+    <p class="small">Feliiiiz cuuuuumple miamoooooorrr</p>
+    <h1>                                            😜</h1>
+    <div class="video-wrap">
+      <video id="secretVideo" controls>
+        <source src="video2.mp4" type="video/mp4">
+        Tu navegador no soporta video.
+      </video>
+    </div>
+
+    <div class="actions">
+      <button class="btn-ghost" id="closeSecret">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<!-- Audio -->
+<audio id="song" src="ma.mp3"></audio>
+
+<script>
+  const gift1 = document.getElementById('gift1');
+  const gift2 = document.getElementById('gift2');
+
+  const modal = document.getElementById('modal');
+  const videoModal = document.getElementById('videoModal');
+
+  const song = document.getElementById('song');
+  const video = document.getElementById('video');
+
+  const confetti = document.getElementById('confetti');
+  const replay = document.getElementById('replay');
+
+  const closeBtn = document.getElementById('close');
+  const closeVideoBtn = document.getElementById('closeVideo');
+
+  // 🥚 Easter egg refs
+  const secretLink = document.getElementById('secretLink');
+  const secretModal = document.getElementById('secretModal');
+  const secretVideo = document.getElementById('secretVideo');
+  const closeSecretBtn = document.getElementById('closeSecret');
+
+  function makeConfetti(){
+    confetti.innerHTML="";
+    for(let i=0;i<80;i++){
+      const c=document.createElement('i');
+      c.style.left=Math.random()*100+"vw";
+      c.style.animationDuration=3+Math.random()*2+"s";
+      c.style.background=`hsl(${Math.random()*360} 90% 60%)`;
+      confetti.appendChild(c);
+    }
+    setTimeout(()=>confetti.innerHTML="",5000);
+  }
+
+  // 🎁 Regalo 1
+  function openSurprise(){
+    modal.classList.add('show');
+    makeConfetti();
+    song.currentTime=0;
+    song.play();
+  }
+
+  gift1.onclick = openSurprise;
+  replay.onclick = openSurprise;
+
+  closeBtn.onclick = () => {
+    modal.classList.remove('show');
+    song.pause();
+  };
+
+  // 🎁 Regalo 2 (Video)
+  gift2.onclick = () => {
+    videoModal.classList.add('show');
+    video.currentTime = 0;
+    video.play();
+  };
+
+  closeVideoBtn.onclick = () => {
+    video.pause();
+    videoModal.classList.remove('show');
+  };
+
+  // 🥚 Easter egg: abre el video secreto (.mp4)
+  secretLink.onclick = () => {
+    // pausa el video normal (por si estaba sonando)
+    video.pause();
+    // cierra modal de video normal
+    videoModal.classList.remove('show');
+
+    // abre modal secreto
+    secretModal.classList.add('show');
+    secretVideo.currentTime = 0;
+    secretVideo.play();
+  };
+
+  closeSecretBtn.onclick = () => {
+    secretVideo.pause();
+    secretModal.classList.remove('show');
+  };
+
+  // Click fuera para cerrar y pausar
+  modal.addEventListener('click', (e)=>{
+    if(e.target === modal){
+      modal.classList.remove('show');
+      song.pause();
+    }
+  });
+
+  videoModal.addEventListener('click', (e)=>{
+    if(e.target === videoModal){
+      video.pause();
+      videoModal.classList.remove('show');
+    }
+  });
+
+  secretModal.addEventListener('click', (e)=>{
+    if(e.target === secretModal){
+      secretVideo.pause();
+      secretModal.classList.remove('show');
+    }
+  });
+
+  // Escape para cerrar todos
+  window.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+      if(modal.classList.contains('show')){
+        modal.classList.remove('show');
+        song.pause();
+      }
+      if(videoModal.classList.contains('show')){
+        video.pause();
+        videoModal.classList.remove('show');
+      }
+      if(secretModal.classList.contains('show')){
+        secretVideo.pause();
+        secretModal.classList.remove('show');
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
