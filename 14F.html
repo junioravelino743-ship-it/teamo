@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>San Valentin</title>
+	<style>
+		body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffb0ea;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        
+        .corazao{
+        	max-width: 80vw;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin-top: 100px;
+            margin-bottom: 50px;
+        }
+        .gift-area{
+      display:grid;
+      place-items:center;
+      padding:18px 0 8px;
+    }
+
+    .gifts{
+      display:flex;
+      gap:40px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .gift-img{
+      width:220px;
+      cursor:pointer;
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,.35));
+      animation: float 2.5s ease-in-out infinite;
+      transition: transform .25s ease;
+    }
+
+    .gift-img:hover{
+      transform: scale(1.08) rotate(-2deg);
+    }
+
+    @keyframes float{
+      0%{ transform: translateY(0); }
+      50%{ transform: translateY(-14px); }
+      100%{ transform: translateY(0); }
+    }
+
+    .hint{
+      margin-top:10px;
+      font-size:14px;
+      opacity:.85;
+    }
+	</style>
+</head>
+<body>
+	<img src="CS.png" class="corazao">
+	<section class="gift-area">
+    <div class="gifts">
+      <!-- 🎁 Regalo 1: foto + música -->
+      <img src="corazonF.png" id="gift1" class="gift-img" alt="Regalo 1">
+
+      <!-- 🎁 Regalo 2: video -->
+     
+    </div>
+</body>
+</html>
