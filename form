@@ -1,0 +1,34 @@
+<html>
+<form action="enviar.php" method="POST" class="contact-form">
+  <label for="nombre">Nombre</label>
+  <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+
+  <div style="display:flex; gap:16px; flex-wrap:wrap;">
+    <div style="flex:1; min-width:220px;">
+      <label for="correo">Correo</label>
+      <input type="email" id="correo" name="correo" placeholder="tu@empresa.com" required>
+    </div>
+
+    <div style="flex:1; min-width:220px;">
+      <label for="telefono">Teléfono</label>
+      <input type="text" id="telefono" name="telefono" placeholder="+52 (55) 0000 0000" required>
+    </div>
+  </div>
+
+  <label for="empresa">Empresa</label>
+  <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa" required>
+
+  <label for="dispensador">¿Tienes dispensador?</label>
+  <select id="dispensador" name="dispensador" required>
+    <option value="">Selecciona una opción</option>
+    <option value="Sí">Sí</option>
+    <option value="No">No</option>
+    <option value="No sé">No sé</option>
+  </select>
+
+  <label for="necesitas">¿Qué necesitas?</label>
+  <textarea id="necesitas" name="necesitas" rows="6" placeholder="Ej. 50 cajas de tissue JRT 2 capas" required></textarea>
+
+  <button type="submit">Enviar mensaje</button>
+</form>
+</html>
